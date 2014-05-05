@@ -34,18 +34,21 @@ if ( null !== $piwikSiteID && null !== $piwikBaseURL)
 {
     function piwik_add_code()
     {      
-        $code = '<!-- Piwik --> 
-<script type="text/javascript">
-var pkBaseURL = (("https:" == document.location.protocol) ? "'.rtrim(OW::getConfig()->getValue('piwik', 'site_url'),"/")."/".'" : "'.rtrim(OW::getConfig()->getValue('piwik', 'site_url'),"/")."/".'");
-document.write(unescape("%3Cscript src=\'" + pkBaseURL + "piwik.js\' type=\'text/javascript\'%3E%3C/script%3E"));
-</script><script type="text/javascript">
-try {
-var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", '.trim(OW::getConfig()->getValue('piwik', 'site_id')).');
-piwikTracker.trackPageView();
-piwikTracker.enableLinkTracking();
-} catch( err ) {}
-</script><noscript><p><img src="'.rtrim(OW::getConfig()->getValue('piwik', 'site_url'),"/").'/piwik.php?idsite='.trim(OW::getConfig()->getValue('piwik', 'site_id')).'" style="border:0" alt="" /></p></noscript>
-<!-- End Piwik Tracking Code -->';
+        $code = '<!-- Piwik -->
+                 <script type="text/javascript">
+                    var _paq = _paq || [];
+                    _paq.push([\'trackPageView\']);
+                    _paq.push([\'enableLinkTracking\']);
+                 (function() {
+                     var u=(("https:" == document.location.protocol) ? "'.rtrim(OW::getConfig()->getValue('piwik', 'site_url'),"/")."/".'" : "'.rtrim(OW::getConfig()->getValue('piwik', 'site_url'),"/")."/".'");
+                     _paq.push([\'setTrackerUrl\', u+\'piwik.php\']);
+                     _paq.push([\'setSiteId\', '.trim(OW::getConfig()->getValue('piwik', 'site_id')).']);
+                     var d=document, g=d.createElement(\'script\'), s=d.getElementsByTagName(\'script\')[0]; g.type=\'text/javascript\';
+                     g.defer=true; g.async=true; g.src=u+\'piwik.js\'; s.parentNode.insertBefore(g,s);
+                 })();
+                </script>
+                <noscript><p><img src="'.rtrim(OW::getConfig()->getValue('piwik', 'site_url'),"/").'/piwik.php?idsite='.trim(OW::getConfig()->getValue('piwik', 'site_id')).'" style="border:0;" alt="" /></p></noscript>
+                <!-- End Piwik Code -->';
 
         OW::getDocument()->appendBody($code);
     }
